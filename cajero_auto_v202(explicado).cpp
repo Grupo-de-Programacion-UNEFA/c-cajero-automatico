@@ -17,7 +17,7 @@ Verificar la extracion de datos(3).*/
 using namespace std;
 /*-----------------Administracion de Datos------------------*/
 
-string name, pass;
+string name = "MasterSex", pass = "2684"; float founds = 10.5;
 
 void spam_de_puntos(int intervalo, int cantidad){
 	
@@ -33,42 +33,6 @@ void mostrar_frase_lentamente(int intervalo, string frase){
 		
 		cout<<frase[i];
 		this_thread::sleep_for(chrono::milliseconds(intervalo));
-	}
-}
-
-int menu_user_logged(){
-	
-	string frase; int select;
-	
-	frase += "1) Depositar dinero.\n";
-	frase += "2) Sacar dinero.\n";
-	frase += "3) Transferir dinero.\n";
-	frase += "4) Actualizar datos.\n";
-	frase += "5) Borrar cuenta.\n";
-	frase += "6) Cerrar sesion.\n";
-	
-	while(true){
-		
-		spam_de_puntos(30, 50);
-		cout<<endl;
-		mostrar_frase_lentamente(30, frase);
-		cin>>select;
-		
-		switch(select){
-			
-			case 1://Depositar dinero.
-			case 2://Sacar dinero.
-			case 3://Transferir dinero a otra cuenta.
-			case 4://Cambiar datos.
-			case 5://Borrar cuenta.
-			case 6: 
-				name = "";
-				pass = "";
-				return 0;
-			
-			default:
-				cout<<"Opcion invalida, subnormal."<<endl;
-		}
 	}
 }
 
@@ -122,6 +86,109 @@ bool comprobar(int lugar, string info){
 	}
 	
 	return false;
+}
+
+
+void mete_saca(bool meter){
+	
+	string linea, respaldo; float monto;
+	ifstream file("registro.txt");
+	
+	if(meter){//Deposito
+			
+		spam_de_puntos(20, 20);
+		mostrar_frase_lentamente(20, " +$+ Meter plata +$+ ");
+		spam_de_puntos(20, 20);
+		
+		cout<<endl<<"Monto a depositar: ";
+		cin>>monto;
+		
+		while(getline(file, linea)){
+			
+			if(name == extraer(1, linea)){
+				
+				respaldo += name + "|" + pass + "|" + to_string(founds + monto) + "\n";
+				spam_de_puntos(20, 10);
+				continue;
+			}
+			respaldo += linea + "\n";
+		}
+		file.close();
+		founds += monto;
+	}
+	
+	if(!meter){//Retiro
+		
+		spam_de_puntos(20, 20);
+		mostrar_frase_lentamente(20, " -$- Sacar plata -$- ");
+		spam_de_puntos(20, 20);
+		
+		cout<<endl<<"Monto a retirar: ";
+		cin>>monto;
+		
+		while(getline(file, linea)){
+			
+			if(name == extraer(1, linea)){
+				
+				respaldo += name + "|" + pass + "|" + to_string(founds - monto) + "\n";
+				spam_de_puntos(20, 10);
+				continue;
+			}
+			respaldo += linea + "\n";
+		}
+		file.close();
+		founds -= monto;
+	}
+	
+	ofstream file2("registro.txt");
+	file2<<respaldo;
+	file2.close();
+	
+}
+
+
+int menu_user_logged(){
+	
+	string frase; int select;
+	
+	frase += "1) Depositar dinero.\n";
+	frase += "2) Sacar dinero.\n";
+	frase += "3) Transferir dinero.\n";
+	frase += "4) Actualizar datos.\n";
+	frase += "5) Borrar cuenta.\n";
+	frase += "6) Cerrar sesion.\n";
+	
+	while(true){
+		
+		spam_de_puntos(20, 50);
+		cout<<endl<<"Usuario: "<<name<<endl<<"Clave: "<<pass<<endl;
+		cout<<"Fondos: "<<founds<<endl;
+		
+		spam_de_puntos(20, 50);
+		cout<<endl;
+		mostrar_frase_lentamente(30, frase);
+		cin>>select;
+		
+		switch(select){
+			
+			case 1://Depositar dinero.
+				mete_saca(true); break;
+				
+			case 2://Sacar dinero.
+				mete_saca(false); break;
+				
+			case 3://Transferir dinero a otra cuenta.
+			case 4://Cambiar datos.
+			case 5://Borrar cuenta.
+			case 6: 
+				name = "";
+				pass = "";
+				return 0;
+			
+			default:
+				cout<<"Opcion invalida, subnormal."<<endl;
+		}
+	}
 }
 
 
@@ -219,21 +286,23 @@ int login(){
 		return 0;
 	}
 	
-	spam_de_puntos(30, 10);
+	spam_de_puntos(20, 10);
 	name = nombre;
-	spam_de_puntos(30, 10);
+	spam_de_puntos(20, 10);
 	pass = clave;
+	spam_de_puntos(20, 10);
+	founds = stof(extraer(3, linea));
 	
 	cout<<endl<<"Usuario: "<<extraer(1, linea)<<endl;
 	cout<<"Clave: "<<extraer(2, linea)<<endl;
-	cout<<"Fondos: "<<extraer(3, linea)<<endl;
+	cout<<extraer(3, linea)<<endl;
 	
 	menu_user_logged();
 	
 	return 0;
 }
 
-int main(){
+int main(){menu_user_logged();
 	
 	int select; string opciones;
 	
@@ -261,14 +330,6 @@ int main(){
 			break;
 		}
 	}
-	
-	int x;
-	cin>>x;
-	cout<<extraer(x, "Niver|696|152.215")<<endl;
-	
-	string s = extraer(3, "n1|0|0.9");
-	float y = stof(s);
-	cout<<abs(y - 1);
 	
 	return 0;
 }
