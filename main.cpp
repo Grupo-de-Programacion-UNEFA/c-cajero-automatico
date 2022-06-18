@@ -23,10 +23,10 @@ int main () {
 	while (true) {//Menu de inicio.
 		
 		cout << "\t\t";
-		mostrar_frase_lentamente(30, "Bienvenido al Banco Petare");
+		mostrar_frase_lentamente("Bienvenido al Banco Petare", medium);
 		cout << endl << endl;
 		
-		mostrar_frase_lentamente(30, opciones);
+		mostrar_frase_lentamente(opciones, medium);
 		cin >> select;
 		
 		switch(select){
