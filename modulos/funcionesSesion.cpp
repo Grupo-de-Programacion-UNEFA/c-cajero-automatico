@@ -19,7 +19,7 @@ int crear () {
 	while (true) {//Nombre.
 		cout << "Introduzca un nombre de usuario: ";
 		cin >> nombre;
-		if (comprobar(1, nombre)) {
+		if (db::comprobar(1, nombre)) {
 			cout << "Nombre invalido." << endl;
 			continue;
 		}
@@ -72,7 +72,7 @@ int login () {
 	//Nombre.
 	cout << "Nombre de usuario: ";
 	cin >> nombre;
-	if (!comprobar(1, nombre)) {
+	if (!db::comprobar(1, nombre)) {
 		
 		cout << "Nombre invalido." << endl;
 		return 0;
@@ -83,13 +83,13 @@ int login () {
 	ifstream file("registro.txt");
 	while (getline(file, linea)) {
 		
-		if(nombre == extraer(1, linea))break;
+		if(nombre == db::extraer(1, linea))break;
 	}
 	file.close();
 	
 	cout << "Clave: ";
 	cin >> clave;
-	if (clave != extraer(2, linea)) {
+	if (clave != db::extraer(2, linea)) {
 		
 		cout << "Clave invalida." << endl;
 		return 0;
@@ -100,11 +100,11 @@ int login () {
 	spam_de_puntos(shortStr);
 	userActivePasswd = clave;
 	spam_de_puntos(shortStr);
-	userActiveFounds = stof(extraer(3, linea));
+	userActiveFounds = stof(db::extraer(3, linea));
 	
-	cout << endl << "Usuario: " << extraer(1, linea) << endl;
-	cout << "Clave: " << extraer(2, linea) << endl;
-	cout << extraer(3, linea) << endl;
+	cout << endl << "Usuario: " << db::extraer(1, linea) << endl;
+	cout << "Clave: " << db::extraer(2, linea) << endl;
+	cout << db::extraer(3, linea) << endl;
 	
 	menu_user_logged();
 	
