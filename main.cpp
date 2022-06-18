@@ -4,7 +4,7 @@
    ------------------------
 */
 // Llama las librerías de cabecero, funciones y variables externas
-#include "funciones.h"
+#include "modulos/funciones.h"
 
 // Declara y define las variables externas aquí para ser usadas en otros archivos
 string userActiveName = "MasterSex", userActivePasswd = "2684";
