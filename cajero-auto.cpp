@@ -18,6 +18,54 @@ using namespace std;
 
 string name = "MasterSex", pass = "2684"; float founds = 10.5;
 
+/* ---------------- Declaracion de funciones ---------------- */
+void spam_de_puntos (int intervalo, int cantidad);
+void mostrar_frase_lentamente (int intervalo, string frase);
+
+string extraer(int lugar, string linea);
+bool comprobar (int lugar, string info);
+
+void mete_saca (bool meter);
+int menu_user_logged();
+int crear ();
+int login ();
+
+/* --------------------- Funcion Main ---------------------- */
+int main () {
+	menu_user_logged();
+	
+	int select; string opciones;
+	
+	opciones += "1) Iniciar sesion.\n";
+	opciones += "2) Crear cuenta.\n";
+	opciones += "3) Salir.\n";
+	
+	while (true) {//Menu de inicio.
+		
+		cout << "\t\t";
+		mostrar_frase_lentamente(30, "Bienvenido al Banco Petare");
+		cout << endl << endl;
+		
+		mostrar_frase_lentamente(30, opciones);
+		cin >> select;
+		
+		switch(select){
+			
+			case 1: login(); break;
+			case 2: crear(); break;
+			case 3: return 0;
+			
+			default:
+			cout << "Chingada madre, escribe las opciones que te doy, puto animal." << endl;
+			break;
+		}
+	}
+	
+	return 0;
+}
+
+/* ---------------- Definicion de funciones ---------------- */
+
 void spam_de_puntos (int intervalo, int cantidad) {
 	for (int i = 0; i < cantidad; i++) {
 		cout << ".";
@@ -32,7 +80,6 @@ void mostrar_frase_lentamente (int intervalo, string frase) {
 	}
 }
 
-/*-----------------Administracion de Datos------------------*/
 string extraer(int lugar, string linea) {
 	
 	string nombre, clave, fondos;
@@ -76,7 +123,6 @@ bool comprobar (int lugar, string info) {
 	}
 	return false;
 }
-
 
 void mete_saca (bool meter) {
 	
@@ -128,8 +174,7 @@ void mete_saca (bool meter) {
 	
 }
 
-
-int menu_user_logged(){
+int menu_user_logged () {
 	
 	string frase; int select;
 	
@@ -273,35 +318,3 @@ int login () {
 	return 0;
 }
 
-int main () {
-	menu_user_logged();
-	
-	int select; string opciones;
-	
-	opciones += "1) Iniciar sesion.\n";
-	opciones += "2) Crear cuenta.\n";
-	opciones += "3) Salir.\n";
-	
-	while (true) {//Menu de inicio.
-		
-		cout << "\t\t";
-		mostrar_frase_lentamente(30, "Bienvenido al Banco Petare");
-		cout << endl << endl;
-		
-		mostrar_frase_lentamente(30, opciones);
-		cin >> select;
-		
-		switch(select){
-			
-			case 1: login(); break;
-			case 2: crear(); break;
-			case 3: return 0;
-			
-			default:
-			cout << "Chingada madre, escribe las opciones que te doy, puto animal." << endl;
-			break;
-		}
-	}
-	
-	return 0;
-}
