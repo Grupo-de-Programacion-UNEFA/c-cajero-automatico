@@ -7,12 +7,11 @@
 #include "modulos/funciones.h"
 
 // Declara y define las variables externas aquí para ser usadas en otros archivos
-string userActiveName = "MasterSex", userActivePasswd = "2684";
-float userActiveFounds = 10.5;
+string userActiveName = "", userActivePasswd = "";
+float userActiveFounds = 0.0;
 
 /* --------------------- Funcion Main ---------------------- */
 int main () {
-	menu_user_logged();
 	
 	int select; string opciones;
 	

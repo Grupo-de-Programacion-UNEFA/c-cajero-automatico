@@ -34,18 +34,17 @@ int menu_user_logged () {
 		spam_de_puntos(longStr);
 		cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
 		cout << "Fondos: " << userActiveFounds << endl;
-		
 		spam_de_puntos(longStr);
 		cout << endl;
 		mostrar_frase_lentamente(frase);
 		cin >> select;
 		
 		switch (select) {
-			case 1: mete_saca(true); break;	 //Depositar dinero.
-			case 2: mete_saca(false); break; //Sacar dinero.
-			case 3: break; 					 //Transferir dinero a otra cuenta.
-			case 4: break; 					 //Cambiar datos.
-			case 5: break;					 //Borrar cuenta.
+			case 1: db::depositarORetirar(true); break;	//Depositar dinero.
+			case 2: db::depositarORetirar(false); break; //Sacar dinero.
+			case 3: cout << endl << ((db::transferir()) ? "Transferencia Exitosa." : "Transferencia Cancelada.") << endl; break; //Transferir dinero a otra cuenta.
+			case 4: break; // Cambiar datos.
+			case 5: break; // Borrar cuenta.
 			case 6: 
 				userActiveName = "";
 				userActivePasswd = "";
@@ -54,4 +53,5 @@ int menu_user_logged () {
 				cout << "Opcion invalida, subnormal." << endl;
 		}
 	}
+	return 0;
 }

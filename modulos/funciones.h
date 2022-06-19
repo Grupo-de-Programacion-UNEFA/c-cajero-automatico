@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <cctype>
 #include <stdlib.h>
 #include <thread>
 #include <chrono>
@@ -28,10 +29,13 @@ extern float userActiveFounds;
 void spam_de_puntos (LongStr cantidad = normalStr, Speed intervalo = fast);
 void mostrar_frase_lentamente (string frase, Speed intervalo = fast);
 
-string extraer(int lugar, string linea);
-bool comprobar (int lugar, string info);
+namespace db{
+   string extraer(int lugar, string linea);
+   bool comprobar (int lugar, string info);
+   void depositarORetirar (bool meter);
+   bool transferir ();
+}
 
-void mete_saca (bool meter);
 int menu_user_logged();
 int crear ();
 int login ();
