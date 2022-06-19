@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <cctype>
 #include <stdlib.h>
 #include <thread>
 #include <chrono>
@@ -32,6 +33,7 @@ namespace db{
    string extraer(int lugar, string linea);
    bool comprobar (int lugar, string info);
    void depositarORetirar (bool meter);
+   bool transferir ();
 }
 
 int menu_user_logged();
