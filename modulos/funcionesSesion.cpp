@@ -44,7 +44,7 @@ int crear () {
 	while(getline(file, linea)){
 		respaldo += linea + "\n";
 		
-		spam_de_puntos(tinyStr, medium);
+		spam_de_puntos(tinyStr, low);
 	}
 	file.close();
 	
@@ -95,18 +95,10 @@ int login () {
 		return 0;
 	}
 	
-	spam_de_puntos(shortStr);
 	userActiveName = nombre;
-	spam_de_puntos(shortStr);
 	userActivePasswd = clave;
-	spam_de_puntos(shortStr);
 	userActiveFounds = stof(db::extraer(3, linea));
-	
-	cout << endl << "Usuario: " << db::extraer(1, linea) << endl;
-	cout << "Clave: " << db::extraer(2, linea) << endl;
-	cout << db::extraer(3, linea) << endl;
-	
+
 	menu_user_logged();
-	
 	return 0;
 }

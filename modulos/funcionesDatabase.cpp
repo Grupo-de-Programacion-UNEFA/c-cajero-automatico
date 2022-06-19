@@ -52,18 +52,31 @@ namespace db {
 	}
 
 	void depositarORetirar (bool meter) {
-		
+		bool valid = false;
 		string linea, respaldo; float monto;
-		ifstream file("registro.txt");
 		
 		if (meter) {//Deposito
 			spam_de_puntos();
 			mostrar_frase_lentamente(" +$+ Meter plata +$+ ", medium);
 			spam_de_puntos();
 			
-			cout << endl << "Monto a depositar: ";
-			cin >> monto;
-			
+			while (!valid) {
+				ifstream file("registro.txt");
+				cout << endl << "Ingrese el monto a transferir: ";
+				cin >> monto;
+				while (getline(file, linea)) {
+					if (userActiveName == extraer(1, linea)) {
+						if (monto > 0) {
+							valid = true;
+						} else {
+							cout << "Lo siento, el monto no es valido.\n";
+						}
+						break;
+					}
+				}
+				file.close();
+			}
+			ifstream file("registro.txt");
 			while (getline(file, linea)) {
 				
 				if (userActiveName == extraer(1, linea)) {
@@ -80,10 +93,26 @@ namespace db {
 			spam_de_puntos();
 			mostrar_frase_lentamente(" -$- Sacar plata -$- ", medium);
 			spam_de_puntos();
-			
-			cout << endl << "Monto a retirar: ";
-			cin >> monto;
-			
+
+			spam_de_puntos(shortStr);
+			// Abre el segundo ciclo para validar el monto a transferir
+			while (!valid) {
+				ifstream file("registro.txt");
+				cout << endl << "Ingrese el monto a transferir: ";
+				cin >> monto;
+				while (getline(file, linea)) {
+					if (userActiveName == extraer(1, linea)) {
+						if (monto > 0 && monto <= stof(extraer(3, linea))) {
+							valid = true;
+						} else {
+							cout << "Lo siento, el monto disponible es insuficiente o el monto ingresado no es valido.\n";
+						}
+						break;
+					}
+				}
+				file.close();
+			}
+			ifstream file("registro.txt");
 			while (getline(file, linea)) {
 				if (userActiveName == extraer(1, linea)) {
 					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds - monto) + "\n";
@@ -139,7 +168,7 @@ namespace db {
 					if (monto > 0 && monto <= stof(extraer(3, linea))) {
 						valid = true;
 					} else {
-						cout << "Lo siento, el monto es insuficiente o no es valido.\n\nSi desea cancelar, ingrese '-1'.";
+						cout << "Lo siento, el monto disponible es insuficiente o el monto ingresado no es valido.\n\nSi desea cancelar, ingrese '-1'.";
 					}
 					break;
 				}

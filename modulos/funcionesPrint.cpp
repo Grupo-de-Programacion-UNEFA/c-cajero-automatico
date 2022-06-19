@@ -34,7 +34,6 @@ int menu_user_logged () {
 		spam_de_puntos(longStr);
 		cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
 		cout << "Fondos: " << userActiveFounds << endl;
-		
 		spam_de_puntos(longStr);
 		cout << endl;
 		mostrar_frase_lentamente(frase);
