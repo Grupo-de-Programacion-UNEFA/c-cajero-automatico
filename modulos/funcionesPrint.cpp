@@ -5,53 +5,54 @@
 */
 
 #include "funciones.h"
-void spam_de_puntos (LongStr cantidad, Speed intervalo) {
-	for (int i = 0; i < cantidad; i++) {
-		cout << ".";
-		this_thread::sleep_for(chrono::milliseconds(intervalo));
-	}
-}
+int menu_user_logged(){
 
-void mostrar_frase_lentamente (string frase, Speed intervalo) {
-	for (int i = 0; i < frase.size(); i++) {
-		cout << frase[i];
-		this_thread::sleep_for(chrono::milliseconds(intervalo));
-	}
-}
-
-int menu_user_logged () {
-	
 	string frase; int select;
-	
+
+	if(name == "null" && pass == "null") return 0;
+
 	frase += "1) Depositar dinero.\n";
 	frase += "2) Sacar dinero.\n";
 	frase += "3) Transferir dinero.\n";
 	frase += "4) Actualizar datos.\n";
 	frase += "5) Borrar cuenta.\n";
 	frase += "6) Cerrar sesion.\n";
-	
-	while (true) {
-		spam_de_puntos(longStr);
-		cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
-		cout << "Fondos: " << userActiveFounds << endl;
-		spam_de_puntos(longStr);
-		cout << endl;
-		mostrar_frase_lentamente(frase);
-		cin >> select;
-		
-		switch (select) {
-			case 1: db::depositarORetirar(true); break;	//Depositar dinero.
-			case 2: db::depositarORetirar(false); break; //Sacar dinero.
-			case 3: cout << endl << ((db::transferir()) ? "Transferencia Exitosa." : "Transferencia Cancelada.") << endl; break; //Transferir dinero a otra cuenta.
-			case 4: break; // Cambiar datos.
-			case 5: break; // Borrar cuenta.
-			case 6: 
-				userActiveName = "";
-				userActivePasswd = "";
-				return 0;		
+
+	while(true){
+
+		cout<<"....................";
+		cout<<endl<<"Usuario: "<<name<<endl<<"Clave: "<<pass<<endl;
+		cout<<"Fondos: "<<founds<<endl;
+
+		cout<<"....................";
+		cout<<endl;
+		cout<<frase;
+		cin>>select;
+
+		switch(select){
+
+			case 1://Depositar dinero.
+				mete_saca(true); break;
+
+			case 2://Sacar dinero.
+				mete_saca(false); break;
+
+			case 3://Transferir dinero a otra cuenta.
+				transferir(); break;
+
+			case 4://Cambiar datos.
+				actualizar(); break;
+
+			case 5://Borrar cuenta.
+				borrar(); return 0;
+
+			case 6:
+				name = "";
+				pass = "";
+				return 0;
+
 			default:
-				cout << "Opcion invalida, subnormal." << endl;
+				cout<<"Opcion invalida, subnormal."<<endl;
 		}
 	}
-	return 0;
 }
