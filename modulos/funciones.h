@@ -15,24 +15,24 @@
 #include <cctype>
 #include <stdlib.h>
 
-
 using namespace std;
 
 // Declara las variables globales como externas a este archivo (es decir que son definidas o usadas en otra parte)
-extern string userActiveName, userActivePasswd;
 extern float userActiveFounds;
+extern string userActiveName, userActivePasswd;
 
 namespace db {
-   string extraer(int lugar, string linea);
+   string extraer (int lugar, string linea);
    bool comprobar (int lugar, string info);
    void depositarORetirar (bool meter);
    bool transferir ();
    bool actualizar ();
    bool borrar ();
-}
-
-int menu_user_logged();
-int crear ();
-int login ();
-int borrar();
-int actualizar();
+} // namespace db
+namespace sesion {
+   int crear ();
+   int login ();
+} // namespace sesion
+namespace print {
+   int menu_user_logged ();
+} // namespace print

@@ -30,13 +30,12 @@ namespace db {
 			fondos += letra;
 		}
 		
-		//cout << nombre << ";" << clave << ";" << fondos;
-		//exit(1);
 		switch (lugar) {
 			case 1: return nombre;
 			case 2: return clave;
 			case 3: return fondos;
 		}
+
 		return "No funciono xd.";
 	}
 
@@ -48,6 +47,7 @@ namespace db {
 		while (getline(file, linea)) {
 			if (info == extraer(lugar, linea)) return true;
 		}
+
 		return false;
 	}
 
@@ -89,7 +89,7 @@ namespace db {
 			}
 			file.close();
 			userActiveFounds += monto;
-		} else {//Retiro
+		} else { // Retiro
 			cout << ".....................";
 			cout << " -$- Sacar plata -$- ";
 			cout << ".....................";
@@ -314,4 +314,4 @@ namespace db {
 		}
 		return false;
 	}
-}
+} // namespace db
