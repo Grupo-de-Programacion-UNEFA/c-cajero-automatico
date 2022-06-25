@@ -36,3 +36,6 @@ namespace sesion {
 namespace print {
    int menu_user_logged ();
 } // namespace print
+namespace util {
+   float inputNumber (string textoARepetir, bool decimal = false);
+} // namespace util

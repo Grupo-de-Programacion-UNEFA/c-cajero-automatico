@@ -19,14 +19,13 @@ int main () {
 	opciones += "1) Iniciar sesion.\n";
 	opciones += "2) Crear cuenta.\n";
 	opciones += "3) Salir.\n";
+	opciones += "> ";
 	
 	while (true) { //Menu de inicio.
-		
 		cout << "\t\tBienvenido al Banco Petare";
 		cout << endl << endl;
 		
-		cout << opciones;
-		cin >> select;
+		select = util::inputNumber(opciones);
 		
 		switch (select) {
 			case 1: sesion::login(); break;

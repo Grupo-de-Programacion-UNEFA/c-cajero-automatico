@@ -55,15 +55,14 @@ namespace db {
 		bool valid = false;
 		string linea, respaldo; float monto;
 		
-		if (meter) {//Deposito
+		if (meter) { //Deposito
 			cout << ".....................";
 			cout << " +$+ Meter plata +$+ ";
-			cout << ".....................";
+			cout << ".....................\n";
 			
 			while (!valid) {
 				ifstream file("registro.txt");
-				cout << endl << "Ingrese el monto a transferir: ";
-				cin >> monto;
+				monto = util::inputNumber("Ingrese el monto a transferir: ", true);
 				while (getline(file, linea)) {
 					if (userActiveName == extraer(1, linea)) {
 						if (monto > 0) {
@@ -80,7 +79,6 @@ namespace db {
 			while (getline(file, linea)) {
 				
 				if (userActiveName == extraer(1, linea)) {
-
 					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds + monto) + "\n";
 					cout << "..........";
 					continue;
@@ -92,14 +90,12 @@ namespace db {
 		} else { // Retiro
 			cout << ".....................";
 			cout << " -$- Sacar plata -$- ";
-			cout << ".....................";
+			cout << ".....................\n";
 
-			cout << "..........";
 			// Abre el segundo ciclo para validar el monto a transferir
 			while (!valid) {
 				ifstream file("registro.txt");
-				cout << endl << "Ingrese el monto a transferir: ";
-				cin >> monto;
+				monto = util::inputNumber("Ingrese el monto a transferir: ", true);
 				while (getline(file, linea)) {
 					if (userActiveName == extraer(1, linea)) {
 						if (monto > 0 && monto <= stof(extraer(3, linea))) {
@@ -133,8 +129,8 @@ namespace db {
 	bool transferir () {
 		// Se declaran las variables a usar
 		bool valid = false;
-		float monto;
 		char yesOrNot;
+		float monto;
 		string linea, respaldo, nombreUsuario;
 		// Abre el primer ciclo para validar el nombre de usuario
 		while (!valid) {
@@ -144,7 +140,9 @@ namespace db {
 			cout << ".....................";
 			cout << endl << "Escriba el nombre del usuario a quien desea transferir: ";
 			cin >> nombreUsuario;
-			if (nombreUsuario == "-1") {file.close(); return false;}
+			if (nombreUsuario == "-1") {
+				file.close(); return false;
+			}
 			while (getline(file, linea)) {
 				if (nombreUsuario == extraer(1, linea)) {
 					valid = true;
@@ -156,12 +154,11 @@ namespace db {
 		}
 		// Se reinicia el validador
 		valid = false;
-		cout << "..........";
+		cout << "..........\n";
 		// Abre el segundo ciclo para validar el monto a transferir
 		while (!valid) {
 			ifstream file("registro.txt");
-			cout << endl << "Ingrese el monto a transferir: ";
-			cin >> monto;
+			monto = util::inputNumber("Ingrese el monto a transferir: ", true);
 			if (monto == -1) {
 				file.close();
 				return false;
@@ -220,17 +217,16 @@ namespace db {
 
 	bool actualizar () {
 		int select;
-		string linea, respaldo, nuevo_nombre, nueva_clave;
+		string frase, linea, respaldo, nuevo_nombre, nueva_clave;
 		ifstream file("registro.txt");
 
-		cout <<"........................" << endl;
-		cout <<" :: Actualizar datos :: " << endl;
-		cout <<"........................" << endl;
-
-		cout << "1) Cambiar nombre de usuario.\n";
-		cout << "2) Cambiar clave.\n" << endl;
-		cout << "> ";
-		cin >> select;
+		frase += "........................\n";
+		frase += " :: Actualizar datos :: \n";
+		frase += "........................\n";
+		frase += "1) Cambiar nombre de usuario.\n";
+		frase += "2) Cambiar clave.\n";
+		frase += "> ";
+		select = util::inputNumber(frase);
 
 		if (select == 1) {
 			while (true) {
@@ -304,7 +300,7 @@ namespace db {
 			file.close();
 
 			ofstream file2("registro.txt");
-			file2<<respaldo;
+			file2 << respaldo;
 			file2.close();
 
 			userActiveName = ""; userActivePasswd = ""; userActiveFounds = 0.0;

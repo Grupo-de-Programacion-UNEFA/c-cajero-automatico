@@ -8,9 +8,10 @@
 
 namespace print {
 	int menu_user_logged () {
-		string frase; int select;
+		int select;
+		string frase;
 
-		if(userActiveName == "" && userActivePasswd == "") return 0;
+		if (userActiveName == "" && userActivePasswd == "") return 0;
 
 		frase += "1) Depositar dinero.\n";
 		frase += "2) Sacar dinero.\n";
@@ -18,6 +19,7 @@ namespace print {
 		frase += "4) Actualizar datos.\n";
 		frase += "5) Borrar cuenta.\n";
 		frase += "6) Cerrar sesion.\n";
+		frase += "> ";
 		
 		while (true) {
 			if (userActiveName == "") return 0;
@@ -26,8 +28,7 @@ namespace print {
 			cout << "Fondos: " << userActiveFounds << endl;
 			cout << "....................";
 			cout << endl;
-			cout << frase;
-			cin >> select;
+			select = util::inputNumber(frase);
 			
 			switch (select) {
 				case 1: db::depositarORetirar(true); break;	//Depositar dinero.

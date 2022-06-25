@@ -13,7 +13,8 @@ namespace sesion {
 		cout << "........................";
 		cout << endl;
 
-		string respaldo, linea, cuenta_nueva, nombre, clave, conf, fondos;
+		string respaldo, linea, cuenta_nueva, nombre, clave, conf;
+		float fondos;
 		
 		// Nombre
 		while (true) {
@@ -40,9 +41,8 @@ namespace sesion {
 		}
 		// Fondos
 		while (true) {
-			cout << "Monto a abonar: ";
-			cin >> fondos;
-			if (stof(fondos) > 0) break;
+			fondos = util::inputNumber("Monto a abonar: ", true);
+			if (fondos > 0) break;
 			cout << "Monto invalido." << endl;
 		}
 
@@ -53,7 +53,7 @@ namespace sesion {
 		}
 		file.close();
 
-		respaldo += nombre + "|" + clave + "|" + fondos + "\n";
+		respaldo += nombre + "|" + clave + "|" + to_string(fondos) + "\n";
 
 		ofstream file2("registro.txt");
 		file2 << respaldo;
