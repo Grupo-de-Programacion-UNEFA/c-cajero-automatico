@@ -3,42 +3,39 @@
    Archivo Principal MAIN
    ------------------------
 */
-// Llama las librerías de cabecero, funciones y variables externas
+// Llama las librerias de cabecero, funciones y variables externas
 #include "modulos/funciones.h"
 
-// Declara y define las variables externas aquí para ser usadas en otros archivos
+// Declara y define las variables externas aqui para ser usadas en otros archivos
 string userActiveName = "", userActivePasswd = "";
 float userActiveFounds = 0.0;
 
 /* --------------------- Funcion Main ---------------------- */
-int main () {
-	
+int main(){
+
 	int select; string opciones;
-	
+
 	opciones += "1) Iniciar sesion.\n";
 	opciones += "2) Crear cuenta.\n";
 	opciones += "3) Salir.\n";
 	
-	while (true) {//Menu de inicio.
+	while (true) { //Menu de inicio.
 		
-		cout << "\t\t";
-		mostrar_frase_lentamente("Bienvenido al Banco Petare", medium);
+		cout << "\t\tBienvenido al Banco Petare";
 		cout << endl << endl;
 		
-		mostrar_frase_lentamente(opciones, medium);
+		cout << opciones;
 		cin >> select;
 		
-		switch(select){
-			
+		switch (select) {
 			case 1: login(); break;
 			case 2: crear(); break;
 			case 3: return 0;
 			
-			default:
-			cout << "Chingada madre, escribe las opciones que te doy, puto animal." << endl;
+			default: cout << "Numero de opcion invalido, ingrese un numero valido" << endl;
 			break;
 		}
 	}
-	
+
 	return 0;
 }

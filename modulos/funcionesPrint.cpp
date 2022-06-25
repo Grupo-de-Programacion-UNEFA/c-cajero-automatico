@@ -5,24 +5,12 @@
 */
 
 #include "funciones.h"
-void spam_de_puntos (LongStr cantidad, Speed intervalo) {
-	for (int i = 0; i < cantidad; i++) {
-		cout << ".";
-		this_thread::sleep_for(chrono::milliseconds(intervalo));
-	}
-}
-
-void mostrar_frase_lentamente (string frase, Speed intervalo) {
-	for (int i = 0; i < frase.size(); i++) {
-		cout << frase[i];
-		this_thread::sleep_for(chrono::milliseconds(intervalo));
-	}
-}
-
 int menu_user_logged () {
-	
+
 	string frase; int select;
-	
+
+	if(userActiveName == "" && userActivePasswd == "") return 0;
+
 	frase += "1) Depositar dinero.\n";
 	frase += "2) Sacar dinero.\n";
 	frase += "3) Transferir dinero.\n";
@@ -31,26 +19,27 @@ int menu_user_logged () {
 	frase += "6) Cerrar sesion.\n";
 	
 	while (true) {
-		spam_de_puntos(longStr);
+		if (userActiveName == "") return 0;
+		cout << "....................";
 		cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
 		cout << "Fondos: " << userActiveFounds << endl;
-		spam_de_puntos(longStr);
+		cout << "....................";
 		cout << endl;
-		mostrar_frase_lentamente(frase);
+		cout << frase;
 		cin >> select;
 		
 		switch (select) {
 			case 1: db::depositarORetirar(true); break;	//Depositar dinero.
 			case 2: db::depositarORetirar(false); break; //Sacar dinero.
 			case 3: cout << endl << ((db::transferir()) ? "Transferencia Exitosa." : "Transferencia Cancelada.") << endl; break; //Transferir dinero a otra cuenta.
-			case 4: break; // Cambiar datos.
-			case 5: break; // Borrar cuenta.
+			case 4: cout << endl << ((db::actualizar()) ? "Cuenta Actualizada Exitosamente." : "Operacion Cancelada.") << endl; break; // Cambiar datos.
+			case 5: cout << endl << ((db::borrar()) ? "Cuenta Borrada Exitosamente." : "Operacion Cancelada.") << endl; break; // Borrar cuenta.
 			case 6: 
 				userActiveName = "";
 				userActivePasswd = "";
 				return 0;		
 			default:
-				cout << "Opcion invalida, subnormal." << endl;
+				cout << "Opcion invalida." << endl;
 		}
 	}
 	return 0;

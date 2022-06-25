@@ -6,17 +6,18 @@
 
 #include "funciones.h"
 
+
 int crear () {
 	
-	spam_de_puntos();
-	mostrar_frase_lentamente("  @ Crear una Cuenta @  ", medium);
-	spam_de_puntos();
+	cout << "........................";
+	cout << "  @ Crear una Cuenta @  ";
+	cout << "........................";
 	cout << endl;
 	//exit(1);
 	
 	string respaldo, linea, cuenta_nueva, nombre, clave, conf, fondos;
 	
-	while (true) {//Nombre.
+	while (true) { //Nombre.
 		cout << "Introduzca un nombre de usuario: ";
 		cin >> nombre;
 		if (db::comprobar(1, nombre)) {
@@ -25,46 +26,46 @@ int crear () {
 		}
 		break;
 	}
-	while (true) {//Clave.
+	while (true) { //Clave.
 		cout << "Introduzca una clave: ";
 		cin >> clave;
+		if (clave.size() != 4) {
+			cout << "Clave invalida." << endl;
+			continue;
+		}
 		cout << "Confirmar clave: ";
 		cin >> conf;
-		if(conf == clave)break;
+		if (conf == clave) break;
 		cout << "Clave invalida." << endl;
 	}
-	while (true) {//Fondos
+	while (true) { //Fondos
 		cout << "Monto a abonar: ";
 		cin >> fondos;
-		if(stof(fondos) > 0)break;
+		if (stof(fondos) > 0) break;
 		cout << "Monto invalido." << endl;
 	}
-	
+
 	ifstream file("registro.txt");
-	while(getline(file, linea)){
-		respaldo += linea + "\n";
-		
-		spam_de_puntos(tinyStr, low);
+	while (getline(file, linea)) {
+		respaldo += linea + "\n";	
+		cout << "...";
 	}
 	file.close();
-	
+
 	respaldo += nombre + "|" + clave + "|" + fondos + "\n";
-	
-	//cout << endl << respaldo;exit(1);
 
 	ofstream file2("registro.txt");
 	file2 << respaldo;
 	file2.close();
-	
+
 	cout << endl;
 	return 0;
 }
 
 int login () {
-	
-	spam_de_puntos();
-	mostrar_frase_lentamente("  # Iniciar sesion #  ", medium);
-	spam_de_puntos();
+	cout << "......................";
+	cout << "  # Iniciar sesion #  ";
+	cout << "......................";
 	cout << endl;
 	
 	string nombre, linea, clave;
@@ -73,32 +74,30 @@ int login () {
 	cout << "Nombre de usuario: ";
 	cin >> nombre;
 	if (!db::comprobar(1, nombre)) {
-		
 		cout << "Nombre invalido." << endl;
 		return 0;
 	}
 	
-	//Clave.
-	
 	ifstream file("registro.txt");
 	while (getline(file, linea)) {
-		
-		if(nombre == db::extraer(1, linea))break;
+		if (nombre == db::extraer(1, linea)) break;
 	}
 	file.close();
 	
+	//Clave.
 	cout << "Clave: ";
 	cin >> clave;
 	if (clave != db::extraer(2, linea)) {
-		
 		cout << "Clave invalida." << endl;
+		cout << "...................." << endl;
 		return 0;
 	}
-	
+
 	userActiveName = nombre;
 	userActivePasswd = clave;
 	userActiveFounds = stof(db::extraer(3, linea));
 
 	menu_user_logged();
+
 	return 0;
 }

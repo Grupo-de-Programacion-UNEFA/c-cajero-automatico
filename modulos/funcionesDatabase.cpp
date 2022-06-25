@@ -56,9 +56,9 @@ namespace db {
 		string linea, respaldo; float monto;
 		
 		if (meter) {//Deposito
-			spam_de_puntos();
-			mostrar_frase_lentamente(" +$+ Meter plata +$+ ", medium);
-			spam_de_puntos();
+			cout << ".....................";
+			cout << " +$+ Meter plata +$+ ";
+			cout << ".....................";
 			
 			while (!valid) {
 				ifstream file("registro.txt");
@@ -82,7 +82,7 @@ namespace db {
 				if (userActiveName == extraer(1, linea)) {
 
 					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds + monto) + "\n";
-					spam_de_puntos(shortStr);
+					cout << "..........";
 					continue;
 				}
 				respaldo += linea + "\n";
@@ -90,11 +90,11 @@ namespace db {
 			file.close();
 			userActiveFounds += monto;
 		} else {//Retiro
-			spam_de_puntos();
-			mostrar_frase_lentamente(" -$- Sacar plata -$- ", medium);
-			spam_de_puntos();
+			cout << ".....................";
+			cout << " -$- Sacar plata -$- ";
+			cout << ".....................";
 
-			spam_de_puntos(shortStr);
+			cout << "..........";
 			// Abre el segundo ciclo para validar el monto a transferir
 			while (!valid) {
 				ifstream file("registro.txt");
@@ -116,7 +116,7 @@ namespace db {
 			while (getline(file, linea)) {
 				if (userActiveName == extraer(1, linea)) {
 					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds - monto) + "\n";
-					spam_de_puntos(shortStr);
+					cout << "..........";
 					continue;
 				}
 				respaldo += linea + "\n";
@@ -139,9 +139,9 @@ namespace db {
 		// Abre el primer ciclo para validar el nombre de usuario
 		while (!valid) {
 			ifstream file("registro.txt");
-			spam_de_puntos();
-			mostrar_frase_lentamente(" +$+ Transferencias +$+ ", medium);
-			spam_de_puntos();
+			cout << ".....................";
+			cout << " <<$<< Transferencia >>$>> ";
+			cout << ".....................";
 			cout << endl << "Escriba el nombre del usuario a quien desea transferir: ";
 			cin >> nombreUsuario;
 			if (nombreUsuario == "-1") {file.close(); return false;}
@@ -156,13 +156,16 @@ namespace db {
 		}
 		// Se reinicia el validador
 		valid = false;
-		spam_de_puntos(shortStr);
+		cout << "..........";
 		// Abre el segundo ciclo para validar el monto a transferir
 		while (!valid) {
 			ifstream file("registro.txt");
 			cout << endl << "Ingrese el monto a transferir: ";
 			cin >> monto;
-			if (monto == -1) {file.close(); return false;}
+			if (monto == -1) {
+				file.close();
+				return false;
+			}
 			while (getline(file, linea)) {
 				if (userActiveName == extraer(1, linea)) {
 					if (monto > 0 && monto <= stof(extraer(3, linea))) {
@@ -173,6 +176,7 @@ namespace db {
 					break;
 				}
 			}
+			cout << "..........";
 			file.close();
 		}
 		// Se reinicia el validador
@@ -180,7 +184,7 @@ namespace db {
 		ifstream file("registro.txt");
 		// Abre el ciclo para confirmar la transferencia
 		while (!valid) {
-			cout << "Persona a Transferir: " << nombreUsuario << endl << "Monto a Transferir: $" << to_string(monto);
+			cout << "Persona a Transferir: " << nombreUsuario << endl << "Monto a Transferir: $" << to_string(monto) << endl;
 			cout << "Esta seguro de que los datos son correctos? (Una vez hecha la transferencia no se puede revertir): [Y/n] ";
 			cin >> yesOrNot;
 			switch (tolower(yesOrNot)) {
@@ -194,13 +198,11 @@ namespace db {
 			// Se actualizar la data del usuarioATransferir
 			if (nombreUsuario == extraer(1, linea)) {
 				respaldo += nombreUsuario + "|" + extraer(2, linea) + "|" + to_string(stof(extraer(3, linea)) + monto) + "\n";
-				spam_de_puntos(shortStr);
 				continue;
 			}
 			// Se actualizar la data del userActive
 			if (userActiveName == extraer(1, linea)) {
 				respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds - monto) + "\n";
-				spam_de_puntos(shortStr);
 				continue;
 			}
 			respaldo += linea + "\n";
@@ -212,7 +214,104 @@ namespace db {
 		ofstream file2("registro.txt");
 		file2 << respaldo;
 		file2.close();
-		
+		cout << ".............................." << endl;
 		return true;
+	}
+
+	bool actualizar () {
+		int select;
+		string linea, respaldo, nuevo_nombre, nueva_clave;
+		ifstream file("registro.txt");
+
+		cout <<"........................" << endl;
+		cout <<" :: Actualizar datos :: " << endl;
+		cout <<"........................" << endl;
+
+		cout << "1) Cambiar nombre de usuario.\n";
+		cout << "2) Cambiar clave.\n" << endl;
+		cout << "> ";
+		cin >> select;
+
+		if (select == 1) {
+			while (true) {
+				cout << "Introducir nuevo nombre de usuario: ";
+				cin >> nuevo_nombre;
+				if (!comprobar(1, nuevo_nombre)) break;
+				cout << "Nombre invalido." << endl;
+			}
+
+			while (getline(file, linea)) {
+
+				if (userActiveName == extraer(1, linea)) {
+					respaldo += nuevo_nombre + "|" + extraer(2, linea) + "|" + extraer(3, linea) + "\n";
+					userActiveName = nuevo_nombre;
+					continue;
+				}
+				respaldo += linea + "\n";
+			}
+		} else if (select == 2) {
+
+			while (true) {
+				cout<<"Introducir nueva clave: ";
+				cin >> nueva_clave;
+				if(nueva_clave.size() == 4) break;
+				cout << "Clave invalida."<< endl;
+			}
+
+			while (getline(file, linea)) {
+				if (userActiveName == extraer(1, linea)) {
+					respaldo += extraer(1, linea) + "|" + nueva_clave + "|" + extraer(3, linea) + "\n";
+					userActivePasswd = nueva_clave;
+					continue;
+				}
+				respaldo += linea + "\n";
+			}
+
+		} else {
+			cout << "Opcion invalida." << endl;
+			return false;
+		}
+		file.close();
+
+		ofstream file2("registro.txt");
+		file2 << respaldo;
+		file2.close();
+
+		return true;
+	}
+
+	bool borrar () {
+
+		string clave, confirm, respaldo, linea;
+		ifstream file("registro.txt");
+
+		cout << ".................... X Borrar cuenta X ....................\n";
+
+		cout << "Clave: ";
+		cin >> clave;
+		cout << "Confirmar clave: ";
+		cin >> confirm;
+
+		if (clave == confirm && clave == userActivePasswd) {
+
+			while (getline(file, linea)) {
+				if (userActiveName == extraer(1, linea)) {
+					cout << ".........." << endl;
+					continue;
+				}
+				respaldo += linea + "\n";
+			}
+			file.close();
+
+			ofstream file2("registro.txt");
+			file2<<respaldo;
+			file2.close();
+
+			userActiveName = ""; userActivePasswd = ""; userActiveFounds = 0.0;
+			return true;
+		} else {
+			cout << "Clave invalida." << endl;
+		}
+		return false;
 	}
 }
