@@ -98,8 +98,6 @@ namespace sesion {
 		userActivePasswd = clave;
 		userActiveFounds = stof(db::extraer(3, linea));
 
-		print::menu_user_logged();
-
 		return 0;
 	}
 } // namespace sesion
