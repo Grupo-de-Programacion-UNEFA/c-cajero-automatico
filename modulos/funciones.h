@@ -40,4 +40,5 @@ namespace util {
    float inputNumber (string textoARepetir, bool decimal = false);
    string formattedFloat (float num);
    string formattedFloat (string str);
+   string inputString (string textoARepetir, bool espaciosEnBlanco = false, unsigned int longitudDeseada = 0);
 } // namespace util

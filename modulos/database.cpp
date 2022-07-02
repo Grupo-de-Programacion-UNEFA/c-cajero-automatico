@@ -138,8 +138,7 @@ namespace db {
 			cout << ".....................";
 			cout << " <<$<< Transferencia >>$>> ";
 			cout << ".....................";
-			cout << endl << "Escriba el nombre del usuario a quien desea transferir: ";
-			cin >> nombreUsuario;
+			nombreUsuario = util::inputString("\nEscriba el nombre del usuario a quien desea transferir: ");
 			if (nombreUsuario == "-1") {
 				file.close(); return false;
 			}
@@ -231,9 +230,10 @@ namespace db {
 		if (select == 1) {
 			while (true) {
 				cout << "Introducir nuevo nombre de usuario: ";
-				cin >> nuevo_nombre;
+				nuevo_nombre = util::inputString("Introduzca el nuevo nombre de usuario: ");
+				if (nuevo_nombre == "-1") return false;
 				if (!comprobar(1, nuevo_nombre)) break;
-				cout << "Nombre invalido." << endl;
+				cout << "Nombre invalido. Si desea cancelar, ingrese '-1'" << endl;
 			}
 
 			while (getline(file, linea)) {
@@ -249,7 +249,7 @@ namespace db {
 
 			while (true) {
 				cout<<"Introducir nueva clave: ";
-				cin >> nueva_clave;
+				nueva_clave = util::inputString("Introduzca la nueva clave: ", false, 4);
 				if(nueva_clave.size() == 4) break;
 				cout << "Clave invalida."<< endl;
 			}
@@ -283,10 +283,8 @@ namespace db {
 
 		cout << ".................... X Borrar cuenta X ....................\n";
 
-		cout << "Clave: ";
-		cin >> clave;
-		cout << "Confirmar clave: ";
-		cin >> confirm;
+		clave = util::inputString("Clave: ", false, 4);
+		confirm = util::inputString("Confirmar clave: ", false, 4);
 
 		if (clave == confirm && clave == userActivePasswd) {
 

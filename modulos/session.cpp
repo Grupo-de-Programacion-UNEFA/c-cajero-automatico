@@ -18,8 +18,7 @@ namespace sesion {
 		
 		// Nombre
 		while (true) {
-			cout << "Introduzca un nombre de usuario: ";
-			cin >> nombre;
+			nombre = util::inputString("Introduzca un nombre de usuario: ");
 			if (db::comprobar(1, nombre) || nombre == "-1") {
 				cout << "Nombre invalido." << endl;
 				continue;
@@ -28,14 +27,13 @@ namespace sesion {
 		}
 		// Clave
 		while (true) {
-			cout << "Introduzca una clave: ";
-			cin >> clave;
+			clave = util::inputString("Introduzca su clave a utilizar (4 caracteres): ", false, 4);
 			if (clave.size() != 4) {
 				cout << "Clave invalida." << endl;
 				continue;
 			}
-			cout << "Confirmar clave: ";
-			cin >> conf;
+			cout << "";
+			conf = util::inputString("Confirme la clave ingresada: ", false, 4);
 			if (conf == clave) break;
 			cout << "Clave invalida." << endl;
 		}
@@ -72,8 +70,7 @@ namespace sesion {
 		string nombre, linea, clave;
 		
 		//Nombre
-		cout << "Nombre de usuario: ";
-		cin >> nombre;
+		nombre = util::inputString("Nombre de usuario: ");
 		if (!db::comprobar(1, nombre)) {
 			cout << "Nombre invalido." << endl;
 			return 0;
@@ -86,8 +83,7 @@ namespace sesion {
 		file.close();
 		
 		//Clave
-		cout << "Clave: ";
-		cin >> clave;
+		clave = util::inputString("Clave: ", false, 4);
 		if (clave != db::extraer(2, linea)) {
 			cout << "Clave invalida." << endl;
 			cout << "...................." << endl;
