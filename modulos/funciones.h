@@ -20,6 +20,9 @@ using namespace std;
 // Declara las variables globales como externas a este archivo (es decir que son definidas o usadas en otra parte)
 extern float userActiveFounds;
 extern string userActiveName, userActivePasswd;
+// Variables Constantes
+extern const float MIN_MONTO_TRANSFERENCIA, MIN_MONTO_DEPOSITO, MIN_MONTO_RETIRO;
+extern const float MAX_MONTO_TRANSFERENCIA, MAX_MONTO_DEPOSITO, MAX_MONTO_RETIRO;
 
 namespace db {
    string extraer (int lugar, string linea);
