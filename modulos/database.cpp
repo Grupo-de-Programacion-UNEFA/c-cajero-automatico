@@ -144,13 +144,13 @@ namespace db {
 				file.close(); return false;
 			}
 			while (getline(file, linea)) {
-				if (nombreUsuario == extraer(1, linea)) {
+				if (nombreUsuario == extraer(1, linea) && nombreUsuario != userActiveName) {
 					valid = true;
 					break;
 				}
 			}
 			file.close();
-			if (!valid) cout << "Lo siento, el nombre de usuario no existe.\n\nSi desea cancelar, ingrese '-1'.\n";
+			if (!valid) cout << "Lo siento, el nombre de usuario no existe o no es valido.\n\nSi desea cancelar, ingrese '-1'.\n";
 		}
 		// Se reinicia el validador
 		valid = false;

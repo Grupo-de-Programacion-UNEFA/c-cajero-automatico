@@ -20,7 +20,7 @@ namespace sesion {
 		while (true) {
 			cout << "Introduzca un nombre de usuario: ";
 			cin >> nombre;
-			if (db::comprobar(1, nombre)) {
+			if (db::comprobar(1, nombre) || nombre == "-1") {
 				cout << "Nombre invalido." << endl;
 				continue;
 			}
