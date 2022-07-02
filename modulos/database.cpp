@@ -79,7 +79,7 @@ namespace db {
 			while (getline(file, linea)) {
 				
 				if (userActiveName == extraer(1, linea)) {
-					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds + monto) + "\n";
+					respaldo += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds + monto) + "\n";
 					cout << "..........";
 					continue;
 				}
@@ -111,7 +111,7 @@ namespace db {
 			ifstream file("registro.txt");
 			while (getline(file, linea)) {
 				if (userActiveName == extraer(1, linea)) {
-					respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds - monto) + "\n";
+					respaldo += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - monto) + "\n";
 					cout << "..........";
 					continue;
 				}
@@ -181,7 +181,7 @@ namespace db {
 		ifstream file("registro.txt");
 		// Abre el ciclo para confirmar la transferencia
 		while (!valid) {
-			cout << "Persona a Transferir: " << nombreUsuario << endl << "Monto a Transferir: $" << to_string(monto) << endl;
+			cout << "Persona a Transferir: " << nombreUsuario << endl << "Monto a Transferir: $" << util::formattedFloat(monto) << endl;
 			cout << "Esta seguro de que los datos son correctos? (Una vez hecha la transferencia no se puede revertir): [Y/n] ";
 			cin >> yesOrNot;
 			switch (tolower(yesOrNot)) {
@@ -194,12 +194,12 @@ namespace db {
 		while (getline(file, linea)) {
 			// Se actualizar la data del usuarioATransferir
 			if (nombreUsuario == extraer(1, linea)) {
-				respaldo += nombreUsuario + "|" + extraer(2, linea) + "|" + to_string(stof(extraer(3, linea)) + monto) + "\n";
+				respaldo += nombreUsuario + "|" + extraer(2, linea) + "|" + util::formattedFloat(stof(extraer(3, linea)) + monto) + "\n";
 				continue;
 			}
 			// Se actualizar la data del userActive
 			if (userActiveName == extraer(1, linea)) {
-				respaldo += userActiveName + "|" + userActivePasswd + "|" + to_string(userActiveFounds - monto) + "\n";
+				respaldo += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - monto) + "\n";
 				continue;
 			}
 			respaldo += linea + "\n";

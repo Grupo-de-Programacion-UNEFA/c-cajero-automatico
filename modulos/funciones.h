@@ -38,4 +38,6 @@ namespace print {
 } // namespace print
 namespace util {
    float inputNumber (string textoARepetir, bool decimal = false);
+   string formattedFloat (float num);
+   string formattedFloat (string str);
 } // namespace util

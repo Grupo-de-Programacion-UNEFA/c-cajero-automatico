@@ -46,7 +46,7 @@ int main () {
 			
 			cout << "....................";
 			cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
-			cout << "Fondos: " << userActiveFounds << endl;
+			cout << "Fondos: " << util::formattedFloat(userActiveFounds) << endl;
 			cout << "....................";
 			cout << endl;
 			select = util::inputNumber(frase);

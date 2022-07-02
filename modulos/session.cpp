@@ -53,7 +53,7 @@ namespace sesion {
 		}
 		file.close();
 
-		respaldo += nombre + "|" + clave + "|" + to_string(fondos) + "\n";
+		respaldo += nombre + "|" + clave + "|" + util::formattedFloat(fondos) + "\n";
 
 		ofstream file2("registro.txt");
 		file2 << respaldo;
