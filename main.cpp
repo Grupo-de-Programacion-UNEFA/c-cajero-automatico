@@ -8,7 +8,7 @@
 
 // Declara y define las variables externas aqui para ser usadas en otros archivos
 float userActiveFounds = 0.0;
-string userActiveName = "", userActivePasswd = "";
+string userActiveName = "", userActivePasswd = "",userActiveCoordenadas="";
 // Variables Constantes
 const float MIN_MONTO_TRANSFERENCIA = 0.01, MIN_MONTO_DEPOSITO = 10.00, MIN_MONTO_RETIRO = 5.00;
 const float MAX_MONTO_TRANSFERENCIA = 1000000.00, MAX_MONTO_DEPOSITO = 1000.00, MAX_MONTO_RETIRO = 500.00;
@@ -50,6 +50,7 @@ int main () {
 			cout << "....................";
 			cout << endl << "Usuario: " << userActiveName << endl << "Clave: " << userActivePasswd << endl;
 			cout << "Fondos: " << util::formattedFloat(userActiveFounds) << endl;
+			cout<<"Numero de cuenta: "<<userActiveCoordenadas<<endl;
 			cout << "....................";
 			cout << endl;
 			select = util::inputNumber(frase);

@@ -68,4 +68,14 @@ namespace util {
 			}
 		}
 	}
+	string inputRandom(){
+		string Coordenadas;
+	random_device nun;
+	mt19937 generator(nun());
+	uniform_int_distribution<>dist(10000000,99999999);
+	Coordenadas=to_string(dist(generator));
+	
+	return Coordenadas;
+
+	}
 } // namespace util

@@ -13,7 +13,7 @@ namespace sesion {
 		cout << "........................";
 		cout << endl;
 
-		string respaldo, linea, cuenta_nueva, nombre, clave, conf;
+		string respaldo, linea, cuenta_nueva, nombre, clave, conf,coordenadas;
 		float fondos;
 		
 		// Nombre
@@ -38,11 +38,18 @@ namespace sesion {
 			cout << "Clave invalida." << endl;
 		}
 		// Fondos
-		while (true) {
+		while (true) { 
 			fondos = util::inputNumber("Monto a abonar: ", true);
 			if (fondos > 0) break;
 			cout << "Monto invalido." << endl;
 		}
+		//numero de cuenta
+		
+			while(true){
+				coordenadas = util::inputRandom();
+				if(db::comprobar(4, coordenadas))continue;
+			break;
+			}
 
 		ifstream file("registro.txt");
 		while (getline(file, linea)) {
@@ -51,7 +58,7 @@ namespace sesion {
 		}
 		file.close();
 
-		respaldo += nombre + "|" + clave + "|" + util::formattedFloat(fondos) + "\n";
+		respaldo += nombre + "|" + clave + "|" + util::formattedFloat(fondos)+ "|" + coordenadas +"\n";
 
 		ofstream file2("registro.txt");
 		file2 << respaldo;
@@ -93,6 +100,7 @@ namespace sesion {
 		userActiveName = nombre;
 		userActivePasswd = clave;
 		userActiveFounds = stof(db::extraer(3, linea));
+		userActiveCoordenadas = (db::extraer(4, linea));
 
 		return 0;
 	}

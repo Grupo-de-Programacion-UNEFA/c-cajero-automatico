@@ -9,7 +9,7 @@
 namespace db {
 	string extraer(int lugar, string linea) {
 		
-		string nombre, clave, fondos;
+		string nombre, clave, fondos,coordenadas;
 		char letra;
 		
 		for (int i = 0; i < linea.size(); i++) {
@@ -29,11 +29,18 @@ namespace db {
 			if(letra == '|')break;
 			fondos += letra;
 		}
-		
+
+		for (int i = nombre.size() + clave.size() + fondos.size() + 3; i < linea.size(); i++) {
+			letra = linea[i];
+			if(letra == '|')break;
+			coordenadas += letra;
+		}
+
 		switch (lugar) {
 			case 1: return nombre;
 			case 2: return clave;
 			case 3: return fondos;
+			case 4: return coordenadas;
 		}
 
 		return "No funciono xd.";
@@ -132,29 +139,29 @@ namespace db {
 		bool valid = false;
 		char yesOrNot;
 		float montoDeTransferencia;
-		string fraseAImprimir, linea, respaldoDeRegistros, nombreUsuario;
+		string fraseAImprimir, linea, respaldoDeRegistros, coordenadasUsuario;
 		// Abre el primer ciclo para validar el nombre de usuario
 		
 		fraseAImprimir += ".....................";
 		fraseAImprimir += " <<$<< Transferencia >>$>> ";
 		fraseAImprimir += ".....................";
 		fraseAImprimir += "\nLimite de Transferencia: de $" + util::formattedFloat(MIN_MONTO_TRANSFERENCIA) + " a $" + util::formattedFloat(MAX_MONTO_TRANSFERENCIA) + "\n";
-		fraseAImprimir += "\nEscriba el nombre del usuario a quien desea transferir: ";
+		fraseAImprimir += "\nEscriba el numero de cuenta del usuario a quien desea transferir: ";
 		while (!valid) {
 			ifstream file("registro.txt");
 
-			nombreUsuario = util::inputString(fraseAImprimir);
-			if (nombreUsuario == "-1") {
+			coordenadasUsuario = util::inputString(fraseAImprimir);
+			if (coordenadasUsuario == "-1") {
 				file.close(); return false;
 			}
 			while (getline(file, linea)) {
-				if (nombreUsuario == extraer(1, linea) && nombreUsuario != userActiveName) {
+				if (coordenadasUsuario == extraer(4, linea) && coordenadasUsuario != userActiveCoordenadas) {
 					valid = true;
 					break;
 				}
 			}
 			file.close();
-			if (!valid) cout << "Lo siento, el nombre de usuario no existe o no es valido.\n\nSi desea cancelar, ingrese '-1'.\n";
+			if (!valid) cout << "Lo siento, el numero de cuenta del usuario no existe o no es valido.\n\nSi desea cancelar, ingrese '-1'.\n";
 		}
 		// Se reinicia el validador
 		valid = false;
@@ -189,7 +196,7 @@ namespace db {
 		ifstream file("registro.txt");
 		// Abre el ciclo para confirmar la transferencia
 		while (!valid) {
-			cout << "Persona a Transferir: " << nombreUsuario << endl << "Monto a Transferir: $" << util::formattedFloat(montoDeTransferencia) << endl;
+			cout << "Persona a Transferir: " << coordenadasUsuario << endl << "Monto a Transferir: $" << util::formattedFloat(montoDeTransferencia) << endl;
 			cout << "Esta seguro de que los datos son correctos? (Una vez hecha la transferencia no se puede revertir): [Y/n] ";
 			cin >> yesOrNot;
 			switch (tolower(yesOrNot)) {
@@ -201,13 +208,13 @@ namespace db {
 		// Abre el ciclo para actualizar los cambios en el fichero
 		while (getline(file, linea)) {
 			// Se actualizar la data del usuarioATransferir
-			if (nombreUsuario == extraer(1, linea)) {
-				respaldoDeRegistros += nombreUsuario + "|" + extraer(2, linea) + "|" + util::formattedFloat(stof(extraer(3, linea)) + montoDeTransferencia) + "\n";
+			if (coordenadasUsuario == extraer(4, linea)) {
+				respaldoDeRegistros += extraer(1, linea) + "|" + extraer(2, linea) + "|" + util::formattedFloat(stof(extraer(3, linea)) + montoDeTransferencia) + "|" + coordenadasUsuario+ "\n";
 				continue;
 			}
 			// Se actualizar la data del userActive
 			if (userActiveName == extraer(1, linea)) {
-				respaldoDeRegistros += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - montoDeTransferencia) + "\n";
+				respaldoDeRegistros += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - montoDeTransferencia) + "|" + userActiveCoordenadas+"\n";
 				continue;
 			}
 			respaldoDeRegistros += linea + "\n";
@@ -238,7 +245,6 @@ namespace db {
 
 		if (select == 1) {
 			while (true) {
-				cout << "Introducir nuevo nombre de usuario: ";
 				nuevoNombreDeUsuario = util::inputString("Introduzca el nuevo nombre de usuario: ");
 				if (nuevoNombreDeUsuario == "-1") return false;
 				if (!comprobar(1, nuevoNombreDeUsuario)) break;
@@ -257,7 +263,6 @@ namespace db {
 		} else if (select == 2) {
 
 			while (true) {
-				cout<<"Introducir nueva clave: ";
 				nuevaClavedeUsuario = util::inputString("Introduzca la nueva clave: ", false, 4);
 				if(nuevaClavedeUsuario.size() == 4) break;
 				cout << "Clave invalida."<< endl;
