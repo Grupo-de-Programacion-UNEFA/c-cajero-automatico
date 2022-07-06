@@ -12,6 +12,8 @@ string userActiveName = "", userActivePasswd = "",userActiveCoordenadas="";
 // Variables Constantes
 const float MIN_MONTO_TRANSFERENCIA = 0.00, MIN_MONTO_DEPOSITO = 10.00, MIN_MONTO_RETIRO = 0.00;
 const float MAX_MONTO_TRANSFERENCIA = 1000000.00, MAX_MONTO_DEPOSITO = 1000.00, MAX_MONTO_RETIRO = 500.00;
+const int DB_NCOLUMNAS = 4;
+const string DB_LOCATION = "registro.txt";
 
 /* --------------------- Funcion Main ---------------------- */
 int main () {

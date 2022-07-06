@@ -75,7 +75,7 @@ namespace action {
 		fraseAImprimir += "\nLimite de Transferencia: de $" + util::formattedFloat(MIN_MONTO_TRANSFERENCIA) + " a $" + util::formattedFloat(MAX_MONTO_TRANSFERENCIA) + "\n";
 		fraseAImprimir += "\nEscriba el numero de cuenta del usuario a quien desea transferir: ";
 		while (!valid) {
-			ifstream file("registro.txt");
+			ifstream file(DB_LOCATION);
 			coordenadasUsuario = util::inputString(fraseAImprimir);
 			if (coordenadasUsuario == "-1") {
 				file.close(); return false;
@@ -95,7 +95,7 @@ namespace action {
 		cout << "..........\n";
 		// Abre el segundo ciclo para validar el monto a transferir
 		while (!valid) {
-			ifstream file("registro.txt");
+			ifstream file(DB_LOCATION);
 			montoDeTransferencia = util::inputNumber("Ingrese el monto a transferir: ", true);
 			if (montoDeTransferencia == -1) {
 				file.close();
@@ -170,7 +170,7 @@ namespace action {
 
 			// Abre el segundo ciclo para validar el monto a transferir
 			while (!valid) {
-				ifstream file("registro.txt");
+				ifstream file(DB_LOCATION);
 				montoDeOperacion = util::inputNumber(fraseAImprimir, true);
 
 				if (montoDeOperacion == -1) return; // Comando para cancelar la operacion.

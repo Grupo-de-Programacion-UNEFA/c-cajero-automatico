@@ -20,21 +20,23 @@ using namespace std;
 
 // Declara las variables globales como externas a este archivo (es decir que son definidas o usadas en otra parte)
 extern float userActiveFounds;
-extern string userActiveName, userActivePasswd,userActiveCoordenadas;
+extern string userActiveName, userActivePasswd, userActiveCoordenadas;
 // Variables Constantes
 extern const float MIN_MONTO_TRANSFERENCIA, MIN_MONTO_DEPOSITO, MIN_MONTO_RETIRO;
 extern const float MAX_MONTO_TRANSFERENCIA, MAX_MONTO_DEPOSITO, MAX_MONTO_RETIRO;
+extern const int DB_NCOLUMNAS;
+extern const string DB_LOCATION;
 
 namespace action {
-   void depositarORetirar (bool meter);
-   bool transferir ();
    bool actualizar ();
    bool borrar ();
+   bool transferir ();
+   void depositarORetirar (bool meter);
 } // namespace action
 namespace db {
    string extraer (int lugar, string linea);
    bool comprobar (int lugar, string info);
-   void escribir (int lugar, string coordenadas, string newInfo, bool borrar);
+   void escribir (int lugar, string coordenadas, string newInfo, bool borrar = false);
 } // namespace db
 namespace sesion {
    int crear ();

@@ -19,7 +19,7 @@ namespace db {
 		char letra;
 		
 		// Ejecuta un bucle para la cantidad de columnas presente
-		for (indice; indice <= 4; indice++) {
+		for (indice; indice <= DB_NCOLUMNAS; indice++) {
 			dato = ""; // Limpia la cadena
 			for (i++; i < longitudLinea; i++) {
 				// Captura la letra segun el indice, si encuentra un separador termina la ejecucion, contrario lo suma a la cadena de dato
@@ -35,7 +35,7 @@ namespace db {
 	// Comprueba en todos los registros si existe si hay un dato existente, segun el indice de columna y el dato enviado
 	bool comprobar (int lugar, string info) {
 		string linea;
-		ifstream file("registro.txt");
+		ifstream file(DB_LOCATION);
 		
 		while (getline(file, linea)) {
 			if (info == extraer(lugar, linea)) 
@@ -48,36 +48,34 @@ namespace db {
 		return false;
 	}
 
-	void escribir (int lugar, string coordenadas, string newInfo, bool borrar = false)  {
+	void escribir (int lugar, string numeroDeCuenta, string newInfo, bool borrar)  {
 
-		ifstream file ("registro.txt");
+		fstream file(DB_LOCATION);
 		string linea, respaldoDeDatos = "";
 
 		while (getline(file, linea)) {
-			if (borrar && coordenadas == extraer(4, linea)) continue;
-			if (coordenadas == extraer(4, linea)) {
+			// Encuentra en el registro que coincida con el numer de cuenta buscado
+			if (numeroDeCuenta == extraer(4, linea)) {
+				// Si se desea borrar, lo omite
+				if (borrar) continue;
 				cout << "checkpoint1." << endl;
-				switch (lugar) {
-				case 1:
-					respaldoDeDatos += newInfo + "|" + extraer(2, linea) + "|" + extraer(3, linea) + "|" + extraer(4, linea) + "\n"; break;
-				case 2:
-					respaldoDeDatos += extraer(1, linea) + "|" + newInfo + "|" + extraer(3, linea) + "|" + extraer(4, linea) + "\n"; break;
-				case 3:
-					respaldoDeDatos += extraer(1, linea) + "|" + extraer(2, linea) + "|" + newInfo + "|" + extraer(4, linea) + "\n"; break;
-				case 4:
-					respaldoDeDatos += extraer(1, linea) + "|" + extraer(3, linea) + "|" + extraer(3, linea) + "|" + newInfo + "\n"; break;
-				default:
-					cout << endl << "ERROR EN LA FUNCION DE ESCRIBIR." << endl; exit (EXIT_FAILURE);
+				// Hace un bucle en cada columna registrada
+				for (int i = 1; i <= DB_NCOLUMNAS; i++) {
+					// Si es la columna indicada, concatena el dato nuevo, de lo contrario el existente
+					if (i == lugar) {
+						respaldoDeDatos += newInfo;
+					} else {
+						respaldoDeDatos += extraer(i, linea);
+					}
+					// Si es el ultimo indice, concatena un salto de linea, de lo contrario el separador
+					respaldoDeDatos += (i == DB_NCOLUMNAS) ? "\n" : "|";
 				}
 				continue;
 			}
 			cout << endl << "a" << endl;
 			respaldoDeDatos += linea + "\n";
 		}
+		file << respaldoDeDatos;
 		file.close();
-
-		ofstream file2 ("registro.txt");
-		file2 << respaldoDeDatos;
-		file2.close();
 	}
 } // namespace db
