@@ -7,51 +7,33 @@
 #include "funciones.h"
 
 namespace db {
-	string extraer(int lugar, string linea) {
-
+	// Recibe una linea de registro y devuelve el dato solicitado segun lo indica el parametro lugar
+	string extraer (int lugar, string linea) {
 		/*------------Orden de Datos---------------
+		 	1      | 2     | 3      | 4
 		 	nombre | clave | fondos | coordenadas
-		 */
-		
-		string nombre, clave, fondos,coordenadas;
+		*/
+			
+		int indice = 1, i = -1, longitudLinea = linea.size();
+		string dato, clave, fondos,coordenadas;
 		char letra;
 		
-		for (int i = 0; i < linea.size(); i++) {
-			letra = linea[i];
-			if (letra == '|') break;
-			nombre += letra;
+		// Ejecuta un bucle para la cantidad de columnas presente
+		for (indice; indice <= 4; indice++) {
+			dato = ""; // Limpia la cadena
+			for (i++; i < longitudLinea; i++) {
+				// Captura la letra segun el indice, si encuentra un separador termina la ejecucion, contrario lo suma a la cadena de dato
+				letra = linea[i];
+				if (letra == '|') break;
+				dato += letra;
+			}
+			if (indice == lugar) return dato;
 		}
-		
-		for (int i = nombre.size() + 1; i < linea.size(); i++) {
-			letra = linea[i];
-			if (letra == '|') break;
-			clave += letra;
-		}
-		
-		for (int i = nombre.size() + clave.size() + 2; i < linea.size(); i++) {
-			letra = linea[i];
-			if(letra == '|')break;
-			fondos += letra;
-		}
-
-		for (int i = nombre.size() + clave.size() + fondos.size() + 3; i < linea.size(); i++) {
-			letra = linea[i];
-			if(letra == '|')break;
-			coordenadas += letra;
-		}
-
-		switch (lugar) {
-			case 1: return nombre;
-			case 2: return clave;
-			case 3: return fondos;
-			case 4: return coordenadas;
-		}
-
-		return "No funciono xd.";
+		return "";
 	}
 
+	// Comprueba en todos los registros si existe si hay un dato existente, segun el indice de columna y el dato enviado
 	bool comprobar (int lugar, string info) {
-		
 		string linea;
 		ifstream file("registro.txt");
 		
@@ -85,7 +67,7 @@ namespace db {
 				case 4:
 					respaldoDeDatos += extraer(1, linea) + "|" + extraer(3, linea) + "|" + extraer(3, linea) + "|" + newInfo + "\n"; break;
 				default:
-					cout << endl << "PROBLEMA EN LA FUNCION DE ESCRIBIR." << endl; exit (EXIT_FAILURE);
+					cout << endl << "ERROR EN LA FUNCION DE ESCRIBIR." << endl; exit (EXIT_FAILURE);
 				}
 				continue;
 			}
