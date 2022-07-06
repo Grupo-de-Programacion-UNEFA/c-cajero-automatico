@@ -8,6 +8,10 @@
 
 namespace db {
 	string extraer(int lugar, string linea) {
+
+		/*------------Orden de Datos---------------
+		 	nombre | clave | fondos | coordenadas
+		 */
 		
 		string nombre, clave, fondos,coordenadas;
 		char letra;
@@ -52,16 +56,20 @@ namespace db {
 		ifstream file("registro.txt");
 		
 		while (getline(file, linea)) {
-			if (info == extraer(lugar, linea)) return true;
+			if (info == extraer(lugar, linea)) 
+			{
+				file.close();
+				return true;
+			}
 		}
-
+		file.close();
 		return false;
 	}
 
 	void depositarORetirar (bool meter) {
 		bool valid = false;
 		float montoDeOperacion;
-		string fraseAImprimir = "", linea, respaldoDeRegistros;
+		string fraseAImprimir = "", linea;
 		
 		if (meter) { //Deposito
 			
@@ -76,16 +84,8 @@ namespace db {
 				if (montoDeOperacion >= MIN_MONTO_DEPOSITO && montoDeOperacion <= MAX_MONTO_DEPOSITO) break; // Se vuelve true y rompe
 				cout << "Lo siento, el monto no esta dentro de los limites de deposito permitidos.\n";
 			}
-			ifstream file("registro.txt");
-			while (getline(file, linea)) {
-				// Busca en cada linea hasta encontrar la del usuario
-				if (userActiveName == extraer(1, linea)) {
-					respaldoDeRegistros += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds + montoDeOperacion) + "\n";
-					continue;
-				}
-				respaldoDeRegistros += linea + "\n";
-			}
-			file.close();
+			//Se actualizan los datos.
+			escribir(3, userActiveCoordenadas, to_string(userActiveFounds + montoDeOperacion), false);
 			userActiveFounds += montoDeOperacion;
 		} else { // Retiro
 			fraseAImprimir += ".....................\n";
@@ -116,30 +116,18 @@ namespace db {
 				}
 				file.close();
 			}
-			ifstream file("registro.txt");
-			while (getline(file, linea)) {
-				if (userActiveName == extraer(1, linea)) {
-					respaldoDeRegistros += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - montoDeOperacion) + "\n";
-					cout << "..........";
-					continue;
-				}
-				respaldoDeRegistros += linea + "\n";
-			}
-			file.close();
+			//Se actualizan los datos.
+			escribir(3, userActiveCoordenadas, to_string(userActiveFounds - montoDeOperacion), false);
 			userActiveFounds -= montoDeOperacion;
 		}
-		
-		ofstream file2("registro.txt");
-		file2 << respaldoDeRegistros;
-		file2.close();
 	}
 
 	bool transferir () {
 		// Se declaran las variables a usar
 		bool valid = false;
 		char yesOrNot;
-		float montoDeTransferencia;
-		string fraseAImprimir, linea, respaldoDeRegistros, coordenadasUsuario;
+		float montoDeTransferencia, fondosUsuario;
+		string fraseAImprimir, linea, coordenadasUsuario;
 		// Abre el primer ciclo para validar el nombre de usuario
 		
 		fraseAImprimir += ".....................";
@@ -156,6 +144,7 @@ namespace db {
 			}
 			while (getline(file, linea)) {
 				if (coordenadasUsuario == extraer(4, linea) && coordenadasUsuario != userActiveCoordenadas) {
+					fondosUsuario = stof(extraer(3, linea));
 					valid = true;
 					break;
 				}
@@ -193,7 +182,6 @@ namespace db {
 		}
 		// Se reinicia el validador
 		valid = false;
-		ifstream file("registro.txt");
 		// Abre el ciclo para confirmar la transferencia
 		while (!valid) {
 			cout << "Persona a Transferir: " << coordenadasUsuario << endl << "Monto a Transferir: $" << util::formattedFloat(montoDeTransferencia) << endl;
@@ -201,31 +189,15 @@ namespace db {
 			cin >> yesOrNot;
 			switch (tolower(yesOrNot)) {
 				case 'y': valid = true; break;
-				case 'n': file.close(); return false;
+				case 'n': return false;
 				default: cout << "Opcion Invalida" << endl; break;
 			}
 		}
-		// Abre el ciclo para actualizar los cambios en el fichero
-		while (getline(file, linea)) {
-			// Se actualizar la data del usuarioATransferir
-			if (coordenadasUsuario == extraer(4, linea)) {
-				respaldoDeRegistros += extraer(1, linea) + "|" + extraer(2, linea) + "|" + util::formattedFloat(stof(extraer(3, linea)) + montoDeTransferencia) + "|" + coordenadasUsuario+ "\n";
-				continue;
-			}
-			// Se actualizar la data del userActive
-			if (userActiveName == extraer(1, linea)) {
-				respaldoDeRegistros += userActiveName + "|" + userActivePasswd + "|" + util::formattedFloat(userActiveFounds - montoDeTransferencia) + "|" + userActiveCoordenadas+"\n";
-				continue;
-			}
-			respaldoDeRegistros += linea + "\n";
-		}
-		file.close();
-		// Se hace update en las variable globales
-		userActiveFounds -= montoDeTransferencia;
-		
-		ofstream file2("registro.txt");
-		file2 << respaldoDeRegistros;
-		file2.close();
+		// Se actualizar la data del usuarioATransferir
+		escribir(3, coordenadasUsuario, util::formattedFloat(fondosUsuario + montoDeTransferencia), false);
+		// Se actualizar la data del userActive
+		escribir(3, userActiveCoordenadas, util::formattedFloat(stof(extraer(3, linea)) - montoDeTransferencia), false);
+		userActiveFounds = stof(extraer(3, linea)) - montoDeTransferencia;
 		cout << ".............................." << endl;
 		return true;
 	}
@@ -233,7 +205,6 @@ namespace db {
 	bool actualizar () {
 		int select;
 		string fraseDelMenuAImprimir, linea, respaldoDeRegistros, nuevoNombreDeUsuario, nuevaClavedeUsuario;
-		ifstream file("registro.txt");
 
 		fraseDelMenuAImprimir += "........................\n";
 		fraseDelMenuAImprimir += " :: Actualizar datos :: \n";
@@ -243,80 +214,86 @@ namespace db {
 		fraseDelMenuAImprimir += "> ";
 		select = util::inputNumber(fraseDelMenuAImprimir);
 
-		if (select == 1) {
-			while (true) {
+		if (select == 1) 
+		{
+			while (true) 
+			{
 				nuevoNombreDeUsuario = util::inputString("Introduzca el nuevo nombre de usuario: ");
 				if (nuevoNombreDeUsuario == "-1") return false;
 				if (!comprobar(1, nuevoNombreDeUsuario)) break;
 				cout << "Nombre invalido. Si desea cancelar, ingrese '-1'" << endl;
 			}
-
-			while (getline(file, linea)) {
-
-				if (userActiveName == extraer(1, linea)) {
-					respaldoDeRegistros += nuevoNombreDeUsuario + "|" + extraer(2, linea) + "|" + extraer(3, linea) + "\n";
-					userActiveName = nuevoNombreDeUsuario;
-					continue;
-				}
-				respaldoDeRegistros += linea + "\n";
-			}
-		} else if (select == 2) {
-
-			while (true) {
+		escribir(1, userActiveCoordenadas, nuevoNombreDeUsuario, false);
+		userActiveName = nuevoNombreDeUsuario;
+		} else if (select == 2) 
+		{
+			while (true) 
+			{
 				nuevaClavedeUsuario = util::inputString("Introduzca la nueva clave: ", false, 4);
 				if(nuevaClavedeUsuario.size() == 4) break;
 				cout << "Clave invalida."<< endl;
 			}
-
-			while (getline(file, linea)) {
-				if (userActiveName == extraer(1, linea)) {
-					respaldoDeRegistros += extraer(1, linea) + "|" + nuevaClavedeUsuario + "|" + extraer(3, linea) + "\n";
-					userActivePasswd = nuevaClavedeUsuario;
-					continue;
-				}
-				respaldoDeRegistros += linea + "\n";
-			}
-
-		} else {
+		escribir (2, userActiveCoordenadas, nuevaClavedeUsuario, false);
+		userActivePasswd = nuevaClavedeUsuario;
+		} else 
+		{
 			cout << "Opcion invalida." << endl;
 			return false;
 		}
-		file.close();
-
-		ofstream file2("registro.txt");
-		file2 << respaldoDeRegistros;
-		file2.close();
 
 		return true;
 	}
 
+	void escribir (int lugar, string coordenadas, string newInfo, bool borrar = false)  {
+
+		ifstream file ("registro.txt");
+		string linea, respaldoDeDatos = "";
+
+		while (getline(file, linea))
+		{
+			if(borrar && coordenadas == extraer(4, linea)) continue;
+			if(coordenadas == extraer(4, linea))
+			{
+				cout<<"checkpoint1."<<endl;
+				switch (lugar)
+				{
+				case 1:
+					respaldoDeDatos += newInfo + "|" + extraer(2, linea) + "|" + extraer(3, linea) + "|" + extraer(4, linea) + "\n"; break;
+				case 2:
+					respaldoDeDatos += extraer(1, linea) + "|" + newInfo + "|" + extraer(3, linea) + "|" + extraer(4, linea) + "\n"; break;
+				case 3:
+					respaldoDeDatos += extraer(1, linea) + "|" + extraer(2, linea) + "|" + newInfo + "|" + extraer(4, linea) + "\n"; break;
+				case 4:
+					respaldoDeDatos += extraer(1, linea) + "|" + extraer(3, linea) + "|" + extraer(3, linea) + "|" + newInfo + "\n"; break;
+				default:
+					cout << endl << "PROBLEMA EN LA FUNCION DE ESCRIBIR." << endl; exit (EXIT_FAILURE);
+				}
+				continue;
+			}
+			cout<<endl<<"a"<<endl;
+			respaldoDeDatos += linea + "\n";
+		}
+		file.close();
+
+		ofstream file2 ("registro.txt");
+		file2 << respaldoDeDatos;
+		file2.close();
+	}
+
 	bool borrar () {
 
-		string clave, confirm, respaldoDeRegistros, linea;
-		ifstream file("registro.txt");
+		string clave, confirm;
 
 		cout << ".................... X Borrar cuenta X ....................\n";
 
 		clave = util::inputString("Clave: ", false, 4);
 		confirm = util::inputString("Confirmar clave: ", false, 4);
 
-		if (clave == confirm && clave == userActivePasswd) {
-
-			while (getline(file, linea)) {
-				if (userActiveName == extraer(1, linea)) {
-					cout << ".........." << endl;
-					continue;
-				}
-				respaldoDeRegistros += linea + "\n";
-			}
-			file.close();
-
-			ofstream file2("registro.txt");
-			file2 << respaldoDeRegistros;
-			file2.close();
-
-			userActiveName = ""; userActivePasswd = ""; userActiveFounds = 0.0;
-			return true;
+		if (clave == confirm && clave == userActivePasswd) 
+		{
+			escribir (1, userActiveCoordenadas, "X", true);
+			userActiveName = "";
+			userActivePasswd = "";
 		} else {
 			cout << "Clave invalida." << endl;
 		}

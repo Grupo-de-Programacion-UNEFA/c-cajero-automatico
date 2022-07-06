@@ -28,6 +28,7 @@ extern const float MAX_MONTO_TRANSFERENCIA, MAX_MONTO_DEPOSITO, MAX_MONTO_RETIRO
 namespace db {
    string extraer (int lugar, string linea);
    bool comprobar (int lugar, string info);
+   void escribir (int lugar, string coordenadas, string newInfo, bool borrar);
    void depositarORetirar (bool meter);
    bool transferir ();
    bool actualizar ();
