@@ -56,11 +56,11 @@ int main () {
 			select = util::inputNumber(frase);
 			
 			switch (select) {
-				case 1: db::depositarORetirar(true); break;	//Depositar dinero.
-				case 2: db::depositarORetirar(false); break; //Sacar dinero.
-				case 3: cout << endl << ((db::transferir()) ? "Transferencia Exitosa." : "Transferencia Cancelada.") << endl; break; //Transferir dinero a otra cuenta.
-				case 4: cout << endl << ((db::actualizar()) ? "Cuenta Actualizada Exitosamente." : "Operacion Cancelada.") << endl; break; // Cambiar datos.
-				case 5: cout << endl << ((db::borrar()) ? "Cuenta Borrada Exitosamente." : "Operacion Cancelada.") << endl; break; // Borrar cuenta.
+				case 1: action::depositarORetirar(true); break;	//Depositar dinero.
+				case 2: action::depositarORetirar(false); break; //Sacar dinero.
+				case 3: cout << endl << ((action::transferir()) ? "Transferencia Exitosa." : "Transferencia Cancelada.") << endl; break; //Transferir dinero a otra cuenta.
+				case 4: cout << endl << ((action::actualizar()) ? "Cuenta Actualizada Exitosamente." : "Operacion Cancelada.") << endl; break; // Cambiar datos.
+				case 5: cout << endl << ((action::borrar()) ? "Cuenta Borrada Exitosamente." : "Operacion Cancelada.") << endl; break; // Borrar cuenta.
 				case 6: 
 					userActiveName = "";
 					userActivePasswd = "";
